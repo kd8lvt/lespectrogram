@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <script src="Spectrogram-2v02.js"></script>
+        <script src="index.js?ver=4"></script>
+
+	<!--Yes, I do enjoy abusing syntax so I can be lazy - why do you ask?-->
+        <style>@import url("https://bootswatch.com/5/darkly/bootstrap.min.css");</style>
+    </head>
+    <body>
+        <div class="text-center" style="margin-top:5%" id="root"></div>
+	<br />
+	<div class="bg-dark text-center container">    <!-- INLINE STYLING MY BELOVED >:) -->
+		<button id="start" class="btn btn-success" style="margin-top:5px;margin-bottom:1rem">Start</button>
+
+		<p id="log"></p>
+		
+		<h3>What is this?</h3>
+		<p>This is a stupid simple spectrogram utility created by kd8lvt for <a href="https://www.youtube.com/@LesageSinging">LesageSinging on YouTube</a>.</p>
+		<br />
+		<h3>How do I use it?</h3>
+		<p>Simply click the "Start" button above, and allow usage of your microphone.</p>
+		<br />
+		<h3>Does my microphone data get sent anywhere?</h3>
+		<p>Only if you supply a valid session passord. If you do, your data will be sent directly to your session host.</p>
+		<p>Otherwise, all your data stays entirely on your device. Feel free to snoop around the client code using your browser's dev tools :)</p>
+		<br />
+		<h3>What spectrogram library does this use?</h3>
+		<p>The lovely <a href="https://www.arc.id.au/Spectrogram.html">Spectrogram-2v02.js</a> by Dr. A.R.Collins</p>
+	</div>
+    </body>
+</html>
