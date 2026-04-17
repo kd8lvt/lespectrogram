@@ -149,8 +149,8 @@ function getColorblindPalette() {
 function changePalette(newPalette) {
     if (Object.values(PALETTE_TYPES).includes(newPalette)) {
         paletteType = newPalette;
-        const paletteName = newPalette === PALETTE_TYPES.COLORBLIND ? 'Colorblind Friendly' : 'Original';
-        document.getElementById("paletteDropdownBtn").textContent = `Palette: ${paletteName}`;
+        const paletteName = newPalette === PALETTE_TYPES.COLORBLIND ? 'Colorblind' : 'Original';
+        document.getElementById("paletteLabel").textContent = paletteName;
         const logElement = document.getElementById("log");
         if (logElement) {
             logElement.textContent = `Palette: ${paletteName}${waterfallDisplay ? ' (restart to apply)' : ''}`;
@@ -185,18 +185,23 @@ function reset() {
     document.getElementById("pause").style.visibility = "hidden";
     document.getElementById("resume").style.visibility = "hidden";
     document.getElementById("reset").style.visibility = "hidden";
+    
+    const micHint = document.getElementById("micHint");
+    if (micHint) {
+        micHint.style.display = "block";
+    }
 }
 
 function changeScale(newScale) {
     if (Object.values(SCALE_TYPES).includes(newScale)) {
         scaleType = newScale;
-        const buttonText = {
-            MEL: 'Scale: Mel',
-            LINEAR: 'Scale: Linear',
-            OCTAVE: 'Scale: Octave',
-            LOG: 'Scale: Log'
+        const labelText = {
+            MEL: 'Mel',
+            LINEAR: 'Linear',
+            OCTAVE: 'Octave',
+            LOG: 'Log'
         };
-        document.getElementById("scaleDropdownBtn").textContent = buttonText[newScale];
+        document.getElementById("scaleLabel").textContent = labelText[newScale];
         const logElement = document.getElementById("log");
         if (logElement) {
             logElement.textContent = `Scale changed to: ${newScale}`;
@@ -214,6 +219,11 @@ async function init() {
         document.getElementById("start").style.visibility = "hidden";
         document.getElementById("pause").style.visibility = "visible";
         document.getElementById("reset").style.visibility = "visible";
+        
+        const micHint = document.getElementById("micHint");
+        if (micHint) {
+            micHint.style.display = "none";
+        }
         
         stream = await navigator.mediaDevices.getUserMedia(AUDIO_CONFIG.constraints);
         isListening = true;
@@ -294,6 +304,12 @@ function handleAudioError(error) {
     document.getElementById("pause").style.visibility = "hidden";
     document.getElementById("resume").style.visibility = "hidden";
     document.getElementById("reset").style.visibility = "hidden";
+    
+    const micHint = document.getElementById("micHint");
+    if (micHint) {
+        micHint.style.display = "block";
+    }
+    
     isListening = false;
 }
 
