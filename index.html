@@ -8,13 +8,15 @@
         <script src="Spectrogram-2v02.js"></script>
 
 		<!-- My jank code -->
-        <script src="index.js?ver=4"></script>
+        <script src="index.js?ver=8"></script>
     </head>
     <body>
         <div class="text-center" style="margin-top:5%" id="root"></div>
 	<br />
 	<div class="bg-dark text-center container">
 		<button id="start" class="btn btn-success">Start</button>
+		<button id="pause" class="btn btn-success" style="display:none">Toggle Recording</button>
+		<button id="reset" class="btn btn-warning" style="display:none">Reset</button>
 		<div class="dropdown">
 			<button class="btn btn-secondary dropdown-toggle" type="button" id="scaleDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">Scale Options</button>
 			<div id="scaleDropdown" class="dropdown-menu" aria-labelledby="scaleDropdownBtn">
