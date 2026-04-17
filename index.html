@@ -15,13 +15,23 @@
 	<br />
 	<div class="bg-dark text-center container">
 		<button id="start" class="btn btn-success">Start</button>
+		<button id="pause" class="btn btn-warning" style="display:none;">Pause</button>
+		<button id="resume" class="btn btn-info" style="display:none;">Resume</button>
+		<button id="reset" class="btn btn-danger" style="display:none;">Reset</button>
 		<div class="dropdown">
 			<button class="btn btn-secondary dropdown-toggle" type="button" id="scaleDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">Scale Options</button>
 			<div id="scaleDropdown" class="dropdown-menu" aria-labelledby="scaleDropdownBtn">
-				<a class="dropdown-item" href="#" onclick="scaleType='MEL'">Mel (Default)</a>
-				<a class="dropdown-item" href="#" onclick="scaleType='LINEAR'">Linear</a>
-				<a class="dropdown-item" href="#" onclick="scaleType='OCTAVE'">Octave</a>
-				<a class="dropdown-item" href="#" onclick="scaleType='LOG'">Log</a>
+				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('MEL')">Mel (Default)</a>
+				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('LINEAR')">Linear</a>
+				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('OCTAVE')">Octave</a>
+				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('LOG')">Log</a>
+			</div>
+		</div>
+		<div class="dropdown">
+			<button class="btn btn-secondary dropdown-toggle" type="button" id="paletteDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">Color Palette</button>
+			<div id="paletteDropdown" class="dropdown-menu" aria-labelledby="paletteDropdownBtn">
+				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changePalette('original')">Original (Jet)</a>
+				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changePalette('colorblind')">Colorblind Friendly</a>
 			</div>
 		</div>
 
