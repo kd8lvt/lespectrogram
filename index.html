@@ -14,28 +14,43 @@
         <div class="text-center" style="margin-top:5%" id="root"></div>
 	<br />
 	<div class="bg-dark text-center container">
-		<button id="start" class="btn btn-success">Start</button>
-		<button id="pause" class="btn btn-warning" style="display:none;">Pause</button>
-		<button id="resume" class="btn btn-info" style="display:none;">Resume</button>
-		<button id="reset" class="btn btn-danger" style="display:none;">Reset</button>
-		<div class="dropdown">
-			<button class="btn btn-secondary dropdown-toggle" type="button" id="scaleDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">Scale Options</button>
-			<div id="scaleDropdown" class="dropdown-menu" aria-labelledby="scaleDropdownBtn">
-				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('MEL')">Mel (Default)</a>
-				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('LINEAR')">Linear</a>
-				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('OCTAVE')">Octave</a>
-				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('LOG')">Log</a>
-			</div>
-		</div>
-		<div class="dropdown">
-			<button class="btn btn-secondary dropdown-toggle" type="button" id="paletteDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">Color Palette</button>
-			<div id="paletteDropdown" class="dropdown-menu" aria-labelledby="paletteDropdownBtn">
-				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changePalette('original')">Original (Jet)</a>
-				<a class="dropdown-item" href="#" onclick="event.preventDefault(); changePalette('colorblind')">Colorblind Friendly</a>
+		<div class="row g-2 mb-3 justify-content-center">
+			<div class="col-auto">
+				<div class="btn-group" role="group">
+					<button id="start" class="btn btn-success">Start</button>
+					<button id="pause" class="btn btn-warning" style="visibility:hidden;">Pause</button>
+					<button id="resume" class="btn btn-info" style="visibility:hidden;">Resume</button>
+					<button id="reset" class="btn btn-danger" style="visibility:hidden;">Reset</button>
+				</div>
 			</div>
 		</div>
 
-		<p id="log"></p>
+		<div class="row g-3 mb-4 justify-content-center align-items-center">
+			<div class="col-auto">
+				<label class="form-label mb-0">Frequency Scale:</label>
+				<div class="dropdown d-block">
+					<button class="btn btn-primary dropdown-toggle w-100" type="button" id="scaleDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">Scale: Mel</button>
+					<ul id="scaleDropdown" class="dropdown-menu" aria-labelledby="scaleDropdownBtn">
+						<li><a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('MEL')">Mel (Default)</a></li>
+						<li><a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('LINEAR')">Linear</a></li>
+						<li><a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('OCTAVE')">Octave</a></li>
+						<li><a class="dropdown-item" href="#" onclick="event.preventDefault(); changeScale('LOG')">Log</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-auto">
+				<label class="form-label mb-0">Color Palette:</label>
+				<div class="dropdown d-block">
+					<button class="btn btn-info dropdown-toggle w-100" type="button" id="paletteDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">Palette: Original</button>
+					<ul id="paletteDropdown" class="dropdown-menu" aria-labelledby="paletteDropdownBtn">
+						<li><a class="dropdown-item" href="#" onclick="event.preventDefault(); changePalette('original')">Original (Jet)</a></li>
+						<li><a class="dropdown-item" href="#" onclick="event.preventDefault(); changePalette('colorblind')">Colorblind Friendly</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<p id="log" class="small text-muted"></p>
 		
 		<h3>What is this?</h3>
 		<p>This is a stupid simple spectrogram utility created by kd8lvt for <a href="https://www.youtube.com/@LesageSinging">LesageSinging on YouTube</a>.</p>

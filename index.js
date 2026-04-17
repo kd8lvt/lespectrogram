@@ -149,9 +149,10 @@ function getColorblindPalette() {
 function changePalette(newPalette) {
     if (Object.values(PALETTE_TYPES).includes(newPalette)) {
         paletteType = newPalette;
+        const paletteName = newPalette === PALETTE_TYPES.COLORBLIND ? 'Colorblind Friendly' : 'Original';
+        document.getElementById("paletteDropdownBtn").textContent = `Palette: ${paletteName}`;
         const logElement = document.getElementById("log");
         if (logElement) {
-            const paletteName = newPalette === PALETTE_TYPES.COLORBLIND ? 'Colorblind Friendly' : 'Original';
             logElement.textContent = `Palette: ${paletteName}${waterfallDisplay ? ' (restart to apply)' : ''}`;
         }
     }
@@ -160,31 +161,45 @@ function changePalette(newPalette) {
 function pause() {
     if (waterfallDisplay && isListening) {
         waterfallDisplay.stop();
-        document.getElementById("pause").style.display = "none";
-        document.getElementById("resume").style.display = "inline";
+        document.getElementById("pause").style.visibility = "hidden";
+        document.getElementById("resume").style.visibility = "visible";
     }
 }
 
 function resume() {
     if (waterfallDisplay && isListening) {
         waterfallDisplay.start();
-        document.getElementById("resume").style.display = "none";
-        document.getElementById("pause").style.display = "inline";
+        document.getElementById("resume").style.visibility = "hidden";
+        document.getElementById("pause").style.visibility = "visible";
     }
 }
 
 function reset() {
     if (waterfallDisplay) {
+        waterfallDisplay.stop();
         waterfallDisplay.clear();
     }
+    
+    isListening = false;
+    document.getElementById("start").style.visibility = "visible";
+    document.getElementById("pause").style.visibility = "hidden";
+    document.getElementById("resume").style.visibility = "hidden";
+    document.getElementById("reset").style.visibility = "hidden";
 }
 
 function changeScale(newScale) {
     if (Object.values(SCALE_TYPES).includes(newScale)) {
         scaleType = newScale;
+        const buttonText = {
+            MEL: 'Scale: Mel',
+            LINEAR: 'Scale: Linear',
+            OCTAVE: 'Scale: Octave',
+            LOG: 'Scale: Log'
+        };
+        document.getElementById("scaleDropdownBtn").textContent = buttonText[newScale];
         const logElement = document.getElementById("log");
         if (logElement) {
-            logElement.textContent = `Scale: ${newScale}`;
+            logElement.textContent = `Scale changed to: ${newScale}`;
         }
     }
 }
@@ -197,8 +212,8 @@ async function init() {
     try {
         audioCtx = new AudioContext();
         document.getElementById("start").style.visibility = "hidden";
-        document.getElementById("pause").style.display = "inline";
-        document.getElementById("reset").style.display = "inline";
+        document.getElementById("pause").style.visibility = "visible";
+        document.getElementById("reset").style.visibility = "visible";
         
         stream = await navigator.mediaDevices.getUserMedia(AUDIO_CONFIG.constraints);
         isListening = true;
@@ -213,6 +228,11 @@ function setupAudioCapture(stream) {
     const source = audioCtx.createMediaStreamSource(stream);
     source.connect(analyser);
     
+    // Clean up old waterfall if it exists
+    if (waterfallDisplay) {
+        waterfallDisplay.stop();
+    }
+    
     const frequencyBinCount = analyser.frequencyBinCount;
     const nyquistFreq = audioCtx.sampleRate / 2;
     
@@ -223,6 +243,12 @@ function setupAudioCapture(stream) {
     const pointsPerLine = Math.round((basePoints * frequencyBinCount) / 256);
     const width = pointsPerLine * AUDIO_CONFIG.waterfall.widthMultiplier;
     const height = pointsPerLine * AUDIO_CONFIG.waterfall.heightMultiplier;
+    
+    // Clear the root container before creating new waterfall
+    const rootElement = document.getElementById("root");
+    if (rootElement) {
+        rootElement.innerHTML = '';
+    }
     
     const bufferWrapper = { buffer: scaledBuffer };
     
@@ -265,9 +291,9 @@ function handleAudioError(error) {
             : "Microphone access error";
     }
     document.getElementById("start").style.visibility = "visible";
-    document.getElementById("pause").style.display = "none";
-    document.getElementById("resume").style.display = "none";
-    document.getElementById("reset").style.display = "none";
+    document.getElementById("pause").style.visibility = "hidden";
+    document.getElementById("resume").style.visibility = "hidden";
+    document.getElementById("reset").style.visibility = "hidden";
     isListening = false;
 }
 
