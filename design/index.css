@@ -89,12 +89,24 @@
 		font-weight: normal; font-style: normal;
 		font-display: swap;
 	}
+	@font-face {
+		font-family: 'PlayfairDisplay';
+		src: url('./PlayfairDisplay-Bold.woff2') format('woff2');
+		font-weight: bold; font-style: normal;
+		font-display: swap;
+	}
 
 	:root {
+			--ui-height: 90svh;
+			--time-height: 2em;
 			--gap: 1em;
 			--font-size-base: clamp(1rem, 0.865rem + 0.513vi, 1.25rem); /* https://chrisburnell.com/clamp-calculator/ */
 			--font-family-primary   : Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
 			--font-family-headings  : "PlayfairDisplay", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+			--ui-colour: #fff;
+			--colour-button: #eee;
+			--colour-button-text: #444;
 	}
 
 	:where(body) {
@@ -106,56 +118,107 @@
 }
 
 @layer design {
-
-	#plotWrap {
-	    display: flex;
-	    justify-content: center;
-	    margin: 2rem auto 0;
+	:where(h1,h2,h3,h4,h5) {
+		font-family: var(--font-family-headings);
+		font-weight: bold;
 	}
 
-	#freqAxis {
-	    position: relative;
-	    width: 64px;
-	    min-width: 64px;
-	    color: #bbb;
-	    font-size: 12px;
-	    text-align: right;
-	    padding-right: 6px;
+	body:not( #thePlot:has(canvas) ) {
+		#micHint {
+			position: absolute; inset: 50% auto auto 50%; transform: translate(-50%,-50%);
+			text-align: center; width: 50%; max-width: 400px;
+		}
 	}
 
-	#plotRight {
-	    display: flex;
-	    flex-direction: column;
+	:where(#thePlot) {
+		:where(#plotWrap) {
+			position: relative;
+			height: calc( var(--ui-height) - var(--time-height) );
+		}
+
+		:where(#root) {
+			height: calc( var(--ui-height) - var(--time-height) );
+
+			canvas {
+				display: block;
+				width: 100%;
+				height: calc( var(--ui-height) - var(--time-height) );
+			}
+		}
+		:where(#timeAxis) {
+			height: var(--time-height);
+			background-color: black; color: white;
+		}
 	}
 
-	#root {
-	    position: relative;
+	:where(#freqAxis) {
+		color: var(--ui-colour);
+
+		&::before {
+			content: "";
+			position: absolute; inset: 0 auto 0 0;
+			width: 5em;
+			background:
+				transparent
+				linear-gradient(
+					to right,
+					hsl(0, 0%, 0%) 0%,
+					hsla(0, 0%, 0%, 0.987) 8.1%,
+					hsla(0, 0%, 0%, 0.951) 15.5%,
+					hsla(0, 0%, 0%, 0.896) 22.5%,
+					hsla(0, 0%, 0%, 0.825) 29%,
+					hsla(0, 0%, 0%, 0.741) 35.3%,
+					hsla(0, 0%, 0%, 0.648) 41.2%,
+					hsla(0, 0%, 0%, 0.55) 47.1%,
+					hsla(0, 0%, 0%, 0.45) 52.9%,
+					hsla(0, 0%, 0%, 0.352) 58.8%,
+					hsla(0, 0%, 0%, 0.259) 64.7%,
+					hsla(0, 0%, 0%, 0.175) 71%,
+					hsla(0, 0%, 0%, 0.104) 77.5%,
+					hsla(0, 0%, 0%, 0.049) 84.5%,
+					hsla(0, 0%, 0%, 0.013) 91.9%,
+					hsla(0, 0%, 0%, 0) 100%);
+		}
 	}
 
-	#root canvas {
-	    display: block;
+	:where(#timeAxis) {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 0.8em;
+	}
+	.time-tick {
+		position: relative !important;
+		transform: none !important;
+		left: 0 !important;
 	}
 
-	#timeAxis {
-	    position: relative;
-	    height: 28px;
-	    color: #bbb;
-	    font-size: 12px;
+	.freq-tick {
+		left: 1em; right: 0; transform: translate(0,-50%);
+		font-size: 0.8em;
+
+		&::after {
+			content: ""; position: absolute; top: 50%; transform: translate(0, 50%);
+			display: block; width: 100%; height: 1px;
+			background:
+				transparent
+				linear-gradient(
+					to right,
+					transparent,
+					transparent 1em,
+					oklch(from var(--ui-colour) l c h / 0.5) 10em
+				)
+				no-repeat;
+		}
 	}
 
-	.freq-tick, .time-tick {
-	    white-space: nowrap;
-	    user-select: none;
+	.controls {
+		display: flex; justify-content: center; gap: 1em; min-height: 10svh; align-items: center;
 	}
 
-	#toolbar {
-	    display: flex;
-	    align-items: center;
-	    flex-wrap: wrap;
-	    gap: 8px;
-	}
-
-	#toolbar .navbar-text {
-	    font-size: 14px;
+	button {
+		padding: 0.5em 1em; border-radius: 0.5em;
+		background-color: var(--colour-button);
+		color: var(--colour-button-text);
 	}
 }
