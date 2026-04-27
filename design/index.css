@@ -1,0 +1,161 @@
+@layer reset, defaults, utilities, design;
+
+@layer reset {
+	/* Use a sensible CSS box model */
+	*, *::before, *::after {
+		box-sizing : border-box;
+		margin: 0; padding: 0;
+	}
+
+	/* Ensure consistent default margins, paddings, borders.
+	   Make everything inherit font styles.
+	   Background-repeat should by default not repeat.
+	   Use more modern text wrap to help ensure no typographic widows */
+	* {
+		border-width: 0;
+		font: inherit;
+		background-repeat: no-repeat;
+		text-wrap: pretty;
+	}
+
+	html {
+		-webkit-text-size-adjust: none;      /* Safari is special */
+		text-size-adjust: none;              /* Text size only controlled by font-size */
+		-webkit-font-smoothing: antialiased; /* This is a good default in a modern Retina world */
+		scroll-behavior: smooth;             /* Default to smooth scrolling (disabled conditionally later, for a11y) */
+		hanging-punctuation: first allow-end last;
+	}
+
+	/* form resets */
+	:where(button, input, select, textarea) {
+		color: inherit;
+		font-family: inherit;
+		font-style: inherit;
+		font-weight: inherit;
+	}
+	:where(button) {
+		all: unset;
+		appearance: none;                         /* Don't use the OS's theming */
+		display: inline-block;
+		cursor: pointer;
+		touch-action: manipulation;               /* faster taps as long as we're not zooming etc */
+		-webkit-tap-highlight-color: transparent; /* No, Safari */
+	}
+	:where([disabled]),
+	:where([disabled]) * { /* if anything is marked as disabled, the cursor should reflect that status */
+		cursor: not-allowed;
+		filter: grayscale(1);
+	}
+
+	/* kill default HTML5 styling on webkit */
+	input[type=search],
+	input[type=submit] {
+		-webkit-appearance : none; appearance : none;
+	}
+	input[type="search"]:where(
+		::-webkit-search-decoration,
+		::-webkit-search-cancel-button
+	),
+	::-webkit-details-marker {
+		display: none;
+	}
+}
+
+@layer defaults {
+	:root {
+		/* Allow interpolation to and from keywords
+		REFERENCE: https://developer.chrome.com/docs/css-ui/animate-to-height-auto/
+	 */
+		interpolate-size: allow-keywords;
+	}
+	* {
+		/* And also allow transitioning "discrete" properties like `display` */
+		transition-behavior: allow-discrete;
+	}
+	:where(input, textarea) {
+		/* Hanging punctuation may be placed outside the line box, except on input and textarea elements */
+		hanging-punctuation: none;
+	}
+
+	@font-face {
+		font-family: 'Montserrat';
+		src: url('./Montserrat-Regular.woff2') format('woff2');
+		font-weight: normal; font-style: normal;
+		font-display: swap;
+	}
+	@font-face {
+		font-family: 'PlayfairDisplay';
+		src: url('./PlayfairDisplay-Regular.woff2') format('woff2');
+		font-weight: normal; font-style: normal;
+		font-display: swap;
+	}
+
+	:root {
+			--gap: 1em;
+			--font-size-base: clamp(1rem, 0.865rem + 0.513vi, 1.25rem); /* https://chrisburnell.com/clamp-calculator/ */
+			--font-family-primary   : Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+			--font-family-headings  : "PlayfairDisplay", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	}
+
+	:where(body) {
+		font-size: var(--font-size-base, 100%);
+		line-height: 1.375;
+		font-family: var(--font-family-primary);
+		hyphens: none;
+	}
+}
+
+@layer design {
+
+	#plotWrap {
+	    display: flex;
+	    justify-content: center;
+	    margin: 2rem auto 0;
+	}
+
+	#freqAxis {
+	    position: relative;
+	    width: 64px;
+	    min-width: 64px;
+	    color: #bbb;
+	    font-size: 12px;
+	    text-align: right;
+	    padding-right: 6px;
+	}
+
+	#plotRight {
+	    display: flex;
+	    flex-direction: column;
+	}
+
+	#root {
+	    position: relative;
+	}
+
+	#root canvas {
+	    display: block;
+	}
+
+	#timeAxis {
+	    position: relative;
+	    height: 28px;
+	    color: #bbb;
+	    font-size: 12px;
+	}
+
+	.freq-tick, .time-tick {
+	    white-space: nowrap;
+	    user-select: none;
+	}
+
+	#toolbar {
+	    display: flex;
+	    align-items: center;
+	    flex-wrap: wrap;
+	    gap: 8px;
+	}
+
+	#toolbar .navbar-text {
+	    font-size: 14px;
+	}
+}
