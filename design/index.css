@@ -1,0 +1,306 @@
+@layer reset, defaults, utilities, design;
+
+@layer reset {
+	/* Use a sensible CSS box model */
+	*, *::before, *::after {
+		box-sizing : border-box;
+		margin: 0; padding: 0;
+	}
+
+	/* Ensure consistent default margins, paddings, borders.
+	   Make everything inherit font styles.
+	   Background-repeat should by default not repeat.
+	   Use more modern text wrap to help ensure no typographic widows */
+	* {
+		border-width: 0;
+		font: inherit;
+		background-repeat: no-repeat;
+		text-wrap: pretty;
+	}
+
+	html {
+		-webkit-text-size-adjust: none;      /* Safari is special */
+		text-size-adjust: none;              /* Text size only controlled by font-size */
+		-webkit-font-smoothing: antialiased; /* This is a good default in a modern Retina world */
+		scroll-behavior: smooth;             /* Default to smooth scrolling (disabled conditionally later, for a11y) */
+		hanging-punctuation: first allow-end last;
+	}
+
+	/* form resets */
+	:where(button, input, select, textarea) {
+		color: inherit;
+		font-family: inherit;
+		font-style: inherit;
+		font-weight: inherit;
+	}
+	:where(button) {
+		all: unset;
+		appearance: none;                         /* Don't use the OS's theming */
+		display: inline-block;
+		cursor: pointer;
+		touch-action: manipulation;               /* faster taps as long as we're not zooming etc */
+		-webkit-tap-highlight-color: transparent; /* No, Safari */
+	}
+	:where([disabled]),
+	:where([disabled]) * { /* if anything is marked as disabled, the cursor should reflect that status */
+		cursor: not-allowed;
+		filter: grayscale(1);
+	}
+
+	/* kill default HTML5 styling on webkit */
+	input[type=search],
+	input[type=submit] {
+		-webkit-appearance : none; appearance : none;
+	}
+	input[type="search"]:where(
+		::-webkit-search-decoration,
+		::-webkit-search-cancel-button
+	),
+	::-webkit-details-marker {
+		display: none;
+	}
+}
+
+@layer defaults {
+	:root {
+		/* Allow interpolation to and from keywords
+		REFERENCE: https://developer.chrome.com/docs/css-ui/animate-to-height-auto/
+	 */
+		interpolate-size: allow-keywords;
+	}
+	* {
+		/* And also allow transitioning "discrete" properties like `display` */
+		transition-behavior: allow-discrete;
+	}
+	:where(input, textarea) {
+		/* Hanging punctuation may be placed outside the line box, except on input and textarea elements */
+		hanging-punctuation: none;
+	}
+
+	@font-face {
+		font-family: 'Montserrat';
+		src: url('./Montserrat-Regular.woff2') format('woff2');
+		font-weight: normal; font-style: normal;
+		font-display: swap;
+	}
+	@font-face {
+		font-family: 'PlayfairDisplay';
+		src: url('./PlayfairDisplay-Regular.woff2') format('woff2');
+		font-weight: normal; font-style: normal;
+		font-display: swap;
+	}
+	@font-face {
+		font-family: 'PlayfairDisplay';
+		src: url('./PlayfairDisplay-Bold.woff2') format('woff2');
+		font-weight: bold; font-style: normal;
+		font-display: swap;
+	}
+
+	:root {
+			--ui-height: 90svh;
+			--time-height: 2em;
+			--gap: 1em;
+			--font-size-base: clamp(1rem, 0.865rem + 0.513vi, 1.25rem); /* https://chrisburnell.com/clamp-calculator/ */
+			--font-family-primary   : Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+			--font-family-headings  : "PlayfairDisplay", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+			--ui-colour: #fff;
+			--colour-button: #eee;
+			--colour-button-start: #bfc;
+			--colour-button-stop: #f96;
+			--colour-button-text: #333;
+	}
+
+	:where(body) {
+		font-size: var(--font-size-base, 100%);
+		line-height: 1.375;
+		font-family: var(--font-family-primary);
+		hyphens: none;
+	}
+}
+
+@layer design {
+	:where(h1,h2,h3,h4,h5) {
+		font-family: var(--font-family-headings);
+		font-weight: bold;
+	}
+
+	body:not( #thePlot:has(canvas) ) {
+		#micHint {
+			position: absolute; inset: 50% auto auto 50%; transform: translate(-50%,-50%);
+			text-align: center; width: 50%; max-width: 400px;
+		}
+	}
+
+	:where(#thePlot) {
+		:where(#plotWrap) {
+			position: relative;
+			height: calc( var(--ui-height) - var(--time-height) );
+		}
+
+		:where(#root) {
+			height: calc( var(--ui-height) - var(--time-height) );
+
+			canvas {
+				display: block;
+				width: 100%;
+				height: calc( var(--ui-height) - var(--time-height) );
+			}
+		}
+		:where(#timeAxis) {
+			height: var(--time-height);
+			background-color: black; color: white;
+		}
+	}
+
+	:where(#freqAxis) {
+		color: var(--ui-colour);
+
+		&::before {
+			content: "";
+			position: absolute; inset: 0 auto 0 0;
+			width: 5em;
+			background:
+				transparent
+				linear-gradient(
+					to right,
+					hsl(0, 0%, 0%) 0%,
+					hsla(0, 0%, 0%, 0.987) 8.1%,
+					hsla(0, 0%, 0%, 0.951) 15.5%,
+					hsla(0, 0%, 0%, 0.896) 22.5%,
+					hsla(0, 0%, 0%, 0.825) 29%,
+					hsla(0, 0%, 0%, 0.741) 35.3%,
+					hsla(0, 0%, 0%, 0.648) 41.2%,
+					hsla(0, 0%, 0%, 0.55) 47.1%,
+					hsla(0, 0%, 0%, 0.45) 52.9%,
+					hsla(0, 0%, 0%, 0.352) 58.8%,
+					hsla(0, 0%, 0%, 0.259) 64.7%,
+					hsla(0, 0%, 0%, 0.175) 71%,
+					hsla(0, 0%, 0%, 0.104) 77.5%,
+					hsla(0, 0%, 0%, 0.049) 84.5%,
+					hsla(0, 0%, 0%, 0.013) 91.9%,
+					hsla(0, 0%, 0%, 0) 100%);
+		}
+	}
+
+	:where(#timeAxis) {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-size: 0.8em;
+	}
+	.time-tick {
+		position: relative !important;
+		transform: none !important;
+		left: 0 !important;
+	}
+
+	.freq-tick {
+		left: 1em; right: 0; transform: translate(0,-50%);
+		font-size: 0.8em;
+
+		&::after {
+			content: ""; position: absolute; top: 50%; transform: translate(0, 50%);
+			display: block; width: 100%; height: 1px;
+			background:
+				transparent
+				linear-gradient(
+					to right,
+					transparent,
+					transparent 1em,
+					oklch(from var(--ui-colour) l c h / 0.5) 10em
+				)
+				no-repeat;
+		}
+	}
+
+	.controls {
+		display: flex; justify-content: center; gap: 1em; min-height: 10svh; align-items: center;
+	}
+	.options {
+		display: flex; gap: 1em; justify-content: center;
+		padding-inline: 2em;
+	}
+
+	label {
+		display: block;
+		padding      : 0.5rem 1rem;
+		border : 1px solid currentColor; border-radius: 0.5em;
+
+		&[for] span {
+			font-size: 0.875em; font-weight: bold;
+			color: currentColor;
+		}
+
+		& > span {
+			margin-block-end: 0.5em;
+		}
+	}
+	select {
+		-moz-appearance    : none; -webkit-appearance: none; appearance: none;
+		padding-right      : 1.5em;
+		background-image   : url(./chevron-down.svg);
+		background-repeat  : no-repeat;
+		background-position: right 0 top 50%;
+		background-size    : 1.25em auto;
+	}
+	select::-ms-expand {
+		display: none;
+	}
+
+	button {
+		padding: 0.5em 1em; border-radius: 0.5em;
+		background-color: var(--colour-button);
+		color: var(--colour-button-text);
+
+		&.start {
+			background-color: var(--colour-button-start);
+		}
+		&.stop {
+			background-color: var(--colour-button-stop);
+		}
+		&.reset {
+			background-color: transparent;
+		}
+	}
+
+	.uc_rich-text {
+		max-width: 72ch; margin: 4em auto 0; padding-inline: 2em;
+
+		> * + * {
+			margin-block-start: 1em;
+		}
+		> * + :where(h2,h3,h4) {
+			margin-block-start: 3rem;
+		}
+
+		h1 { font-size: 2rem; }
+		h2 { font-size: 1.5rem; }
+		h3 { font-size: 1.2rem; }
+
+		img { float: left; margin: 0 1em 1em 0; }
+
+		h2,h3,h4 {
+			clear: both;
+		}
+	}
+
+	footer {
+		margin-block-start: 4em;
+		padding: 1em;
+		text-align: center;
+		font-size: 0.8em;
+		background-color: #bbb;
+	}
+
+	@media screen and (min-width:1024px) {
+		:where(#toolbar) {
+			display: flex; justify-content: space-between; align-items: center;
+			padding-inline: 1em;
+
+			.options {
+				padding-inline: 0;
+			}
+		}
+	}
+}

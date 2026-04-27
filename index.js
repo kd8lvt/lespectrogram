@@ -267,15 +267,21 @@ function wireDropdown(attr, labelId, nameMap, setter) {
     });
 }
 
+
+
 window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("startBtn").addEventListener('click', doStart);
-    document.getElementById("pauseBtn").addEventListener('click', doPause);
-    document.getElementById("stopBtn").addEventListener('click', doStop);
-    document.getElementById("resetBtn").addEventListener('click', doReset);
+	document.getElementById("startBtn").addEventListener('click', doStart);
+	document.getElementById("pauseBtn").addEventListener('click', doPause);
+	document.getElementById("stopBtn").addEventListener('click', doStop);
+	document.getElementById("resetBtn").addEventListener('click', doReset);
 
-    wireDropdown("data-scale", "scaleLabel", SCALE_NAMES, v => scaleType = v);
-    wireDropdown("data-color", "colorLabel", COLOR_NAMES, v => colorType = v);
+	document.querySelector('#scale').addEventListener('change', e => {
+		scaleType = e.target.value;
+	});
+	document.querySelector('#color').addEventListener('change', e => {
+		colorType = e.target.value;
+	});
 
-    updateButtons();
-    checkMicPermission();
+	updateButtons();
+	checkMicPermission();
 });
