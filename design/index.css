@@ -217,6 +217,36 @@
 	.controls {
 		display: flex; justify-content: center; gap: 1em; min-height: 10svh; align-items: center;
 	}
+	.options {
+		display: flex; gap: 1em; justify-content: center;
+		padding-inline: 2em;
+	}
+
+	label {
+		display: block;
+		padding      : 0.5rem 1rem;
+		border : 1px solid currentColor; border-radius: 0.5em;
+
+		&[for] span {
+			font-size: 0.875em; font-weight: bold;
+			color: currentColor;
+		}
+
+		& > span {
+			margin-block-end: 0.5em;
+		}
+	}
+	select {
+		-moz-appearance    : none; -webkit-appearance: none; appearance: none;
+		padding-right      : 1.5em;
+		background-image   : url(./chevron-down.svg);
+		background-repeat  : no-repeat;
+		background-position: right 0 top 50%;
+		background-size    : 1.25em auto;
+	}
+	select::-ms-expand {
+		display: none;
+	}
 
 	button {
 		padding: 0.5em 1em; border-radius: 0.5em;
@@ -235,7 +265,7 @@
 	}
 
 	.uc_rich-text {
-		max-width: 72ch; margin-inline: auto; padding-inline: 2em;
+		max-width: 72ch; margin: 4em auto 0; padding-inline: 2em;
 
 		> * + * {
 			margin-block-start: 1em;
@@ -261,5 +291,16 @@
 		text-align: center;
 		font-size: 0.8em;
 		background-color: #bbb;
+	}
+
+	@media screen and (min-width:1024px) {
+		:where(#toolbar) {
+			display: flex; justify-content: space-between; align-items: center;
+			padding-inline: 1em;
+
+			.options {
+				padding-inline: 0;
+			}
+		}
 	}
 }

@@ -24,7 +24,7 @@
 		</div>
 
 		<main>
-			<nav
+			<div
 				id="toolbar"
 			>
 				<div class="controls">
@@ -75,37 +75,8 @@
 							<option value="CIVIDIS">Cividis (Colorblind-safe)</option>
 						</select>
 					</label>
-
-				<div class="dropdown me-3">
-					<button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-						Scale: <strong id="scaleLabel">Mel</strong>
-					</button>
-					<ul class="dropdown-menu dropdown-menu-dark">
-						<li><a class="dropdown-item" href="#" data-scale="MEL">Mel (Default)</a></li>
-						<li><a class="dropdown-item" href="#" data-scale="LINEAR">Linear</a></li>
-						<li><a class="dropdown-item" href="#" data-scale="OCTAVE">Octave</a></li>
-						<li><a class="dropdown-item" href="#" data-scale="LOG">Log</a></li>
-					</ul>
 				</div>
-
-				<div class="dropdown">
-					<button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-						Colors: <strong id="colorLabel">Jet</strong>
-					</button>
-					<ul class="dropdown-menu dropdown-menu-dark">
-						<li><a class="dropdown-item" href="#" data-color="JET">Jet (Default)</a></li>
-						<li><a class="dropdown-item" href="#" data-color="MAGMA">Magma</a></li>
-						<li><a class="dropdown-item" href="#" data-color="INFERNO">Inferno</a></li>
-						<li><a class="dropdown-item" href="#" data-color="PLASMA">Plasma</a></li>
-						<li><a class="dropdown-item" href="#" data-color="VIRIDIS">Viridis</a></li>
-						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="#" data-color="CIVIDIS">Cividis (Colorblind-safe)</a></li>
-						<li><hr class="dropdown-divider"></li>
-						<li><a class="dropdown-item" href="#" data-color="HEAT">Heat</a></li>
-						<li><a class="dropdown-item" href="#" data-color="GRAYSCALE">Grayscale</a></li>
-					</ul>
-				</div>
-			</nav>
+			</div>
 
 			<div class="uc_rich-text">
 				<h1>Le Spectrogram</h1>
