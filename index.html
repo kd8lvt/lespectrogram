@@ -31,6 +31,7 @@
 					<button
 						id="startBtn"
 						type="button"
+						class="start"
 					>Start</button>
 					<button
 						id="pauseBtn"
@@ -40,13 +41,40 @@
 					<button
 						id="stopBtn"
 						type="button"
+						class="stop"
 						disabled
 					>Stop</button>
 					<button
 						id="resetBtn"
 						type="button"
+						class="reset"
 					>Reset</button>
 				</div>
+
+				<div class="options">
+					<label for="scale">
+						<span>Scale</span>
+						<select id="scale" name="scale">
+							<option value="MEL">Mel</option>
+							<option value="LINEAR">Linear</option>
+							<option value="OCTAVE">Octave</option>
+							<option value="LOG">Log</option>
+						</select>
+					</label>
+
+					<label for="color">
+						<span>Color</span>
+						<select id="color" name="color">
+							<option value="JET">Jet</option>
+							<option value="MAGMA">Magma</option>
+							<option value="INFERNO">Inferno</option>
+							<option value="PLASMA">Plasma</option>
+							<option value="VIRIDIS">Viridis</option>
+							<option value="HEAT">Heat</option>
+							<option value="GRAYSCALE">Grayscale</option>
+							<option value="CIVIDIS">Cividis (Colorblind-safe)</option>
+						</select>
+					</label>
 
 				<div class="dropdown me-3">
 					<button class="btn btn-sm btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -79,26 +107,28 @@
 				</div>
 			</nav>
 
-			<h1>Spectrogram</h1>
+			<div class="uc_rich-text">
+				<h1>Le Spectrogram</h1>
 
-			<div id="micHint">
-				<p>This app needs microphone access to visualize your voice. Click <strong>Start</strong> to begin.</p>
+				<div id="micHint">
+					<p>This app needs microphone access to visualize your voice. Click <strong>Start</strong> to begin.</p>
+				</div>
+
+				<p id="log"></p>
+
+				<img src="favicon.jpg" alt="" width="130" height="130" />
+				<p>This is a simple spectrogram utility created by kd8lvt for <a href="https://www.youtube.com/@LesageSinging">LesageSinging on YouTube</a>. It allows you to visualise the qualities of your voice, for learning purposes.</p>
+
+				<h2>How do I use it?</h2>
+				<p>Click the "Start" button above, and allow usage of your microphone.</p>
+
+				<h2>Does my microphone data get sent anywhere?</h2>
+				<p>Only if you supply a valid session password. If you do, your data will be sent directly to your session host.</p>
+				<p>Otherwise, all your data stays entirely on your device. Feel free to snoop around the client code using your browser's dev tools :)</p>
+
+				<h2>What spectrogram library does this use?</h2>
+				<p>The lovely <a href="https://www.arc.id.au/Spectrogram.html">Spectrogram-2v02.js</a> by Dr. A.R.Collins</p>
 			</div>
-
-			<p id="log"></p>
-
-			<h2>What is this?</h2>
-			<p>This is a stupid simple spectrogram utility created by kd8lvt for <a href="https://www.youtube.com/@LesageSinging">LesageSinging on YouTube</a>.</p>
-
-			<h2>How do I use it?</h2>
-			<p>Click the "Start" button above, and allow usage of your microphone.</p>
-
-			<h2>Does my microphone data get sent anywhere?</h2>
-			<p>Only if you supply a valid session password. If you do, your data will be sent directly to your session host.</p>
-			<p>Otherwise, all your data stays entirely on your device. Feel free to snoop around the client code using your browser's dev tools :)</p>
-
-			<h2>What spectrogram library does this use?</h2>
-			<p>The lovely <a href="https://www.arc.id.au/Spectrogram.html">Spectrogram-2v02.js</a> by Dr. A.R.Collins</p>
 		</main>
 
 		<footer>

@@ -106,7 +106,9 @@
 
 			--ui-colour: #fff;
 			--colour-button: #eee;
-			--colour-button-text: #444;
+			--colour-button-start: #bfc;
+			--colour-button-stop: #f96;
+			--colour-button-text: #333;
 	}
 
 	:where(body) {
@@ -220,5 +222,44 @@
 		padding: 0.5em 1em; border-radius: 0.5em;
 		background-color: var(--colour-button);
 		color: var(--colour-button-text);
+
+		&.start {
+			background-color: var(--colour-button-start);
+		}
+		&.stop {
+			background-color: var(--colour-button-stop);
+		}
+		&.reset {
+			background-color: transparent;
+		}
+	}
+
+	.uc_rich-text {
+		max-width: 72ch; margin-inline: auto; padding-inline: 2em;
+
+		> * + * {
+			margin-block-start: 1em;
+		}
+		> * + :where(h2,h3,h4) {
+			margin-block-start: 3rem;
+		}
+
+		h1 { font-size: 2rem; }
+		h2 { font-size: 1.5rem; }
+		h3 { font-size: 1.2rem; }
+
+		img { float: left; margin: 0 1em 1em 0; }
+
+		h2,h3,h4 {
+			clear: both;
+		}
+	}
+
+	footer {
+		margin-block-start: 4em;
+		padding: 1em;
+		text-align: center;
+		font-size: 0.8em;
+		background-color: #bbb;
 	}
 }
