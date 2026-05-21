@@ -1,6 +1,10 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
+		<!-- Cross-origin isolation shim (must load before any other script).
+		     Registers a service worker that re-adds COOP/COEP headers so
+		     SharedArrayBuffer is available on plain static hosts (GH Pages, etc). -->
+		<script src="coi-serviceworker.js"></script>
 		<!-- Stylesheet -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.8/dist/darkly/bootstrap.min.css" crossorigin="anonymous">
 		<link rel="stylesheet" href="index.css">
@@ -19,7 +23,10 @@
 		<script src="js/mic.js?ver=5"></script>
 		<script src="js/ui.js?ver=5"></script>
 		<script src="js/sync.js"></script>
+		<script src="js/transport.js"></script>
+		<script src="js/wave-renderer.js"></script>
 		<script src="js/app.js?ver=6"></script>
+		<script src="js/transport-app.js"></script>
 		<title>LeSpectogram</title>
 	</head>
 	<body>
@@ -186,6 +193,12 @@
 									<label class="form-check-label" for="opt_timeFlip">Flip X axis labels</label>
 								</div>
 
+								<h6 class="dropdown-header px-0">Waveform Magnification</h6>
+								<div class="d-flex align-items-center mb-2">
+									<input type="range" class="form-range flex-grow-1 me-2" id="opt_waveformGain" min="0.25" max="16" step="0.25" />
+									<span id="waveformGainVal" class="text-light small" style="min-width: 3em; text-align: right;">1.00×</span>
+								</div>
+
 								<div class="mt-2 text-start mb-3">
 									<span class="text-light small d-block mb-1">Scroll Direction</span>
 									<div class="form-check form-check-inline">
@@ -215,6 +228,10 @@
 									<input class="form-check-input" type="checkbox" id="opt_enableSync">
 									<label class="form-check-label" for="opt_enableSync">Cross-Tab Sync</label>
 								</div>
+								<div class="form-check form-switch text-start">
+									<input class="form-check-input" type="checkbox" id="opt_monitorInput">
+									<label class="form-check-label" for="opt_monitorInput">Monitor mic during record</label>
+								</div>
 
 								<hr class="dropdown-divider mt-4" />
 								<a href="#" id="prefsResetBtn" class="dropdown-item text-warning text-start px-0 fw-bold">Reset All to Defaults</a>
@@ -223,6 +240,35 @@
 					</div>
 				</div>
 			</nav>
+
+			<div class="d-flex align-items-center mb-2" style="gap: 8px;">
+				<button id="transportHelpBtn" type="button" class="text-light bg-transparent"
+					data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-html="true" data-bs-placement="right"
+					data-bs-title="Transport hotkeys"
+					data-bs-content="<kbd>Space</kbd> Play / Pause toggle<br><kbd>T</kbd> Record toggle<br><kbd>Enter</kbd> Rewind to start<br><kbd>Del</kbd> / <kbd>Backspace</kbd> Delete selected region<br><br>Drag region <em>label bar</em>: move region<br>Drag <em>wave area</em>: paint range selection<br><kbd>Shift</kbd>+drag <em>wave area</em>: pan timeline<br>Click <em>ruler</em>: seek (no auto-play)"
+					style="border:1px solid currentColor; border-radius:50%; width:22px; height:22px; padding:0; line-height:1; font-size:13px; font-weight:bold; flex-shrink:0;">?</button>
+				<nav id="transportBar" class="bg-secondary rounded px-3 py-2 d-flex align-items-center flex-wrap flex-grow-1" style="gap: 6px;">
+					<strong class="text-warning me-2">Transport:</strong>
+					<button id="transportLoadBtn" class="btn btn-sm btn-info">Load File</button>
+					<input type="file" id="transportFileInput" accept="audio/*" style="display:none" />
+					<button id="transportPlayBtn" class="btn btn-sm btn-success" disabled>Play</button>
+					<button id="transportRecordBtn" class="btn btn-sm btn-danger">● Rec</button>
+					<button id="transportStopBtn" class="btn btn-sm btn-outline-light" disabled>■ Stop</button>
+					<button id="transportLoopBtn" class="btn btn-sm btn-outline-info" title="Toggle loop within range selection">🔁 Loop</button>
+					<button id="transportDeleteBtn" class="btn btn-sm btn-outline-warning" disabled title="Delete selected region (Del / Backspace)">Delete</button>
+					<span id="transportTime" class="text-light small ms-2 font-monospace" style="font-variant-numeric: tabular-nums;">0:00.00 / 0:00.00</span>
+					<span id="transportStatus" class="text-light small ms-2 opacity-75">Idle</span>
+				</nav>
+			</div>
+
+			<div class="mb-3" style="position:relative;">
+				<canvas id="transportWaveform" style="display:block; width:100%; height:120px; background:#1a1a1a; border-radius:6px;"></canvas>
+				<div id="transportZoomCtl" style="position:absolute; top:3px; right:6px; display:flex; gap:2px;">
+					<button id="transportZoomOutBtn" type="button" class="btn btn-sm btn-dark" style="padding:0 6px; line-height:1.2; font-size:12px;" title="Zoom out">−</button>
+					<span id="transportZoomVal" class="text-light small" style="align-self:center; padding:0 4px; font-variant-numeric: tabular-nums; min-width:2.5em; text-align:center;">1×</span>
+					<button id="transportZoomInBtn" type="button" class="btn btn-sm btn-dark" style="padding:0 6px; line-height:1.2; font-size:12px;" title="Zoom in">+</button>
+				</div>
+			</div>
 
 			<div id="lastNoteWrap" class="text-center mb-2" style="display:none;">
 				<span class="badge bg-dark border border-info text-info" style="font-size:14px;" title="Approximate: based on the strongest frequency bin. Overtones, noise, and timbre may shift the detected pitch.">

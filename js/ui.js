@@ -221,6 +221,25 @@ function wireSettingsPanel(onChange) {
         });
     }
 
+    const monitorEl = document.getElementById("opt_monitorInput");
+    if (monitorEl) {
+        monitorEl.addEventListener('change', () => {
+            Prefs.set("monitorInput", monitorEl.checked);
+            onChange("monitorInput", monitorEl.checked);
+        });
+    }
+
+    const waveformGainEl = document.getElementById("opt_waveformGain");
+    const waveformGainVal = document.getElementById("waveformGainVal");
+    if (waveformGainEl) {
+        waveformGainEl.addEventListener('input', () => {
+            const v = parseFloat(waveformGainEl.value) || 1.0;
+            if (waveformGainVal) waveformGainVal.textContent = v.toFixed(2) + "×";
+            Prefs.set("waveformGain", v);
+            onChange("waveformGain", v);
+        });
+    }
+
     document.querySelectorAll('input[name="opt_direction"]').forEach(el => {
         el.addEventListener('change', () => {
             if (el.checked) {
@@ -309,6 +328,14 @@ function applyPrefsToUI() {
 
     const syncEl = document.getElementById("opt_enableSync");
     if (syncEl) syncEl.checked = !!p.enableSync;
+
+    const monitorEl = document.getElementById("opt_monitorInput");
+    if (monitorEl) monitorEl.checked = !!p.monitorInput;
+
+    const waveformGainEl = document.getElementById("opt_waveformGain");
+    if (waveformGainEl) waveformGainEl.value = p.waveformGain != null ? p.waveformGain : 1.0;
+    const waveformGainVal = document.getElementById("waveformGainVal");
+    if (waveformGainVal) waveformGainVal.textContent = Number(p.waveformGain != null ? p.waveformGain : 1.0).toFixed(2) + "×";
 
     const modeNames = { "frame": "Smooth (Frame-based)", "strict": "Strict (Catch-up)" };
     setDropdownLabel("renderModeLabel", modeNames, p.renderMode);

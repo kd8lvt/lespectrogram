@@ -485,7 +485,36 @@ const App = (() => {
         }
     }
 
-    return { init };
+    return {
+        init,
+        // Host interface for transport-app.js. Read-only getters keep the
+        // references live; helpers expose the few private functions the
+        // transport feature needs to drive into App's audio graph.
+        getAudioCtx: () => audioCtx,
+        getAnalyser: () => analyser,
+        getAppState: () => appState,
+        getMicSourceNode: () => micSourceNode,
+        audioConstraints,
+        ensureAudioCtx,
+        startVisualization,
+        // Re-establish the legacy mic→analyser edge without re-acquiring the
+        // stream. Used by transport-app after the transport returns to IDLE
+        // to restore the spectrogram's live mic visualization.
+        reconnectLegacyMicToAnalyser: () => {
+            if (!micSourceNode) return false;
+            try { micSourceNode.disconnect(); } catch (_) {}
+            micSourceNode.connect(analyser);
+            return true;
+        },
+        disconnectMediaSources: () => {
+            if (mediaStream) { mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
+            if (micSourceNode) { micSourceNode.disconnect(); micSourceNode = null; }
+            if (fileSourceNode) fileSourceNode.disconnect();
+            const fileEl = FilePlayer.getElement();
+            if (fileEl) fileEl.pause();
+            try { analyser.disconnect(); } catch (_) { }
+        }
+    };
 })();
 
 window.addEventListener('DOMContentLoaded', App.init);

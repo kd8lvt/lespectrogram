@@ -2,3 +2,4 @@
 .vscode/
 package.json
 project.code-workspace
+CMakeLists.txt

@@ -25,6 +25,8 @@ const Prefs = (() => {
         noiseSuppression: false,
         autoGainControl: false,
         enableSync: false,
+        monitorInput: false,
+        waveformGain: 1.0,
         renderMode: "frame", // "frame" or "delta"
         customColor1: "#000000",
         customColor2: "#330055",
