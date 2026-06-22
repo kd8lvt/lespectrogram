@@ -52,7 +52,18 @@ function hzToNoteString(hz) {
     if (midiNum < 0 || midiNum > 127) return `${hz.toFixed(1)} Hz`;
     const octave = Math.floor(midiNum / 12) - 1;
     const noteName = noteNames[midiNum % 12];
-    return `${noteName}${octave} (${hz.toFixed(1)} Hz)`;
+
+    //Solfege
+    let solfege="";
+    const doIdx = noteNames.indexOf(document.getElementById("doNote").value);
+    console.log(doIdx)
+    if (doIdx >= 0) {
+        const doOffset = (midiNum - doIdx) % 12;
+        const solfegeNames = ["Do","Di","Re","Ri","Mi","Fa","Fi","So","Si","La","Li","Ti"];
+        solfege=` (${solfegeNames[doOffset]})`;
+    }
+
+    return `${noteName}${octave} (${hz.toFixed(1)} Hz)${solfege}`;
 }
 
 function midiToHz(midi) {

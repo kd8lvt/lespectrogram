@@ -31,7 +31,8 @@ const Prefs = (() => {
         customColor1: "#000000",
         customColor2: "#330055",
         customColor3: "#bb0055",
-        customColor4: "#ffffee"
+        customColor4: "#ffffee",
+        doNote: "C"
     };
 
     let state = { ...DEFAULTS };
